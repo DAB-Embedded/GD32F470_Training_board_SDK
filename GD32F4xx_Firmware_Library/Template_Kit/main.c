@@ -95,12 +95,6 @@ int main(void)
 
     printf("Hello World\r\n\0");
 
-    for (int i = -9; i < 101; i++)
-    {
-        gd_eval_7seg_display_digits(i);
-        delay_1ms(30);
-    }
-
     while(1) {
     }
 }
