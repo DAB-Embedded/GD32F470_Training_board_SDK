@@ -58,7 +58,7 @@ extern volatile uint8_t  i2c_process_flag;
 
 /* function declarations */
 /* configure the GPIO ports */
-void gpio_config(void);
+void i2c_gpio_config(void);
 /* configure the I2CX interface */
 void i2c_config(void);
 /* handle I2CX event interrupt request */

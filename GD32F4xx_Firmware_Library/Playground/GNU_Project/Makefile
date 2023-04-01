@@ -40,6 +40,10 @@ BUILD_DIR = build
 C_SOURCES =  \
 ../gd32f4xx_it.c \
 ../main.c \
+../enet_cfg.c \
+../i2c.c \
+../i2c_devices.c \
+../rtc.c \
 ../systick.c \
 ../../Utilities/gd32f470z_tk.c \
 ../../Firmware/GD32F4xx_standard_peripheral/Source/gd32f4xx_rtc.c \
@@ -131,7 +135,7 @@ C_INCLUDES =  \
 -I../../Firmware/CMSIS/GD/GD32F4xx/Include \
 -I../../Utilities \
 -I../../Firmware/CMSIS \
--I../../Template \
+-I../../Playground \
 -I../../Firmware/CMSIS/GD/GD32F4xx/Source/ARM \
 -I../../Firmware/GD32F4xx_standard_peripheral/Include
 

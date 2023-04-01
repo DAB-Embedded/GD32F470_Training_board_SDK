@@ -84,13 +84,15 @@ int rtc_startup(void)
         }
 
         uint32_t reset_cnt = RTC_BKP1;
-        printf("Reset count: %d\n\r", reset_cnt++);
+        printf("Reset count: %ld\n\r", reset_cnt++);
         RTC_BKP1 = reset_cnt;
 
         rtc_show_time();
     }
 
     rcu_all_reset_flag_clear();
+
+    return 0;
 }
 
 /*!
@@ -132,7 +134,6 @@ void rtc_pre_config(void)
 void rtc_setup(void)
 {
     /* setup RTC time value */
-    uint32_t tmp_hh = 0xFF, tmp_mm = 0xFF, tmp_ss = 0xFF;
 
     rtc_initpara.factor_asyn = prescaler_a;
     rtc_initpara.factor_syn = prescaler_s;
@@ -162,12 +163,8 @@ void rtc_setup(void)
 */
 void rtc_show_time(void)
 {
-    uint32_t time_subsecond = 0;
-    uint8_t subsecond_ss = 0,subsecond_ts = 0,subsecond_hs = 0;
-
     rtc_current_time_get(&rtc_initpara);
 
-    printf("Current time: %0.2x:%0.2x:%0.2x .%d%d%d \n\r", \
-          rtc_initpara.hour, rtc_initpara.minute, rtc_initpara.second,\
-          subsecond_ss, subsecond_ts, subsecond_hs);
+    printf("Current time: %x:%x:%x \n\r", \
+          rtc_initpara.hour, rtc_initpara.minute, rtc_initpara.second);
 }

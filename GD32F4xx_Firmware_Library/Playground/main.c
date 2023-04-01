@@ -35,11 +35,16 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSI
 OF SUCH DAMAGE.
 */
 
-#include "gd32f4xx.h"
-#include "systick.h"
 #include <stdio.h>
+#include <gd32f4xx.h>
+#include <gd32f470z_tk.h>
+#include "systick.h"
+#include "i2c.h"
+#include "i2c_devices.h"
+#include "enet_cfg.h"
 #include "main.h"
-#include "gd32f470z_tk.h"
+
+void i2c_nvic_config(void);
 
 int _write(int fd, char *buf, int size)
 {
@@ -57,27 +62,16 @@ int _write(int fd, char *buf, int size)
 }
 
 /*!
-    \brief    toggle the led every 500ms
+    \brief      configure the NVIC peripheral
     \param[in]  none
     \param[out] none
     \retval     none
 */
-void led_spark(void)
+void i2c_nvic_config(void)
 {
-    static __IO uint32_t timingdelaylocal = 0U;
-
-    if(timingdelaylocal) {
-
-        if(timingdelaylocal < 500U) {
-            gd_eval_led_on(LED1);
-        } else {
-            gd_eval_led_off(LED1);
-        }
-
-        timingdelaylocal--;
-    } else {
-        timingdelaylocal = 1000U;
-    }
+    nvic_priority_group_set(NVIC_PRIGROUP_PRE1_SUB3);
+    nvic_irq_enable(I2C0_EV_IRQn, 0, 2);
+    nvic_irq_enable(I2C0_ER_IRQn, 0, 1);
 }
 
 /*!
@@ -88,19 +82,40 @@ void led_spark(void)
 */
 int main(void)
 {
-    gd_eval_led_init(LED1);
+	int i = 0;
+
+    gd_eval_led_init(LED2);
     gd_eval_7seg_init();
     gd_eval_com_init(EVAL_COM0);
     systick_config();
 
-    printf("Hello World\r\n\0");
+    /* configure the NVIC */
+    i2c_nvic_config();
 
-    for (int i = -9; i < 101; i++)
-    {
-        gd_eval_7seg_display_digits(i);
-        delay_1ms(30);
-    }
+    /* configure GPIO */
+    i2c_gpio_config();
+
+    /* configure I2C */
+    i2c_config();
+    i2c_devices_init();
+
+    printf("Playground project\r\n");
+    gd_eval_7seg_display_digits(i++);
+
+    rtc_startup();
+
+    i2c_probe_test();
+    gd_eval_7seg_display_digits(i++);
+
+    enet_system_setup();
+    gd_eval_7seg_display_digits(i++);
 
     while(1) {
+    	if (enet_rx_frame() > 0)
+    	{
+    		gd_eval_7seg_display_digits(i++);
+    		if (i > 99) i = 0;
+    	}
+    	//enet_tx_test_frame();
     }
 }

@@ -37,6 +37,7 @@ OF SUCH DAMAGE.
 #include "i2c.h"
 #include <stdio.h>
 #include <gd32f470z_tk.h>
+#include "systick.h"
 
 #define BUFFER_SIZE 256
 

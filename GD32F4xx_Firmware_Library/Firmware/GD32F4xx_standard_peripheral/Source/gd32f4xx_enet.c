@@ -352,6 +352,19 @@ ErrStatus enet_init(enet_mediamode_enum mediamode, enet_chksumconf_enum checksum
     /* initialize ENET peripheral with generally concerned parameters */
     enet_default_init();
 
+    /* specific PHY settings */
+#if(PHY_TYPE == RTL8201)
+    phy_value = 7;
+    enet_phy_write_read(ENET_PHY_WRITE, PHY_ADDRESS, 31, &phy_value);
+    enet_phy_write_read(ENET_PHY_READ, PHY_ADDRESS, 19, &phy_value);
+    phy_value |= (1 << 3);
+    enet_phy_write_read(ENET_PHY_WRITE, PHY_ADDRESS, 19, &phy_value);
+    phy_value = 0x18;
+    enet_phy_write_read(ENET_PHY_WRITE, PHY_ADDRESS, 17, &phy_value);
+    phy_value = 0;
+    enet_phy_write_read(ENET_PHY_WRITE, PHY_ADDRESS, 31, &phy_value);
+#endif
+
     /* 1st, configure mediamode */
     media_temp = (uint32_t)mediamode;
     /* if is PHY auto negotiation */
@@ -421,7 +434,6 @@ ErrStatus enet_init(enet_mediamode_enum mediamode, enet_chksumconf_enum checksum
     reg_value &= (~(ENET_MAC_CFG_SPD | ENET_MAC_CFG_DPM | ENET_MAC_CFG_LBM));
     reg_value |= media_temp;
     ENET_MAC_CFG = reg_value;
-
 
     /* 2st, configure checksum */
     if(RESET != ((uint32_t)checksum & ENET_CHECKSUMOFFLOAD_ENABLE)) {

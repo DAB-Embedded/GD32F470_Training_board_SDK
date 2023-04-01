@@ -48,7 +48,7 @@ uint8_t i2c_write_process = 0;
     \param[out] none
     \retval     none
 */
-void gpio_config(void)
+void i2c_gpio_config(void)
 {
     /* enable GPIOB clock */
     rcu_periph_clock_enable(RCU_GPIO_I2C);

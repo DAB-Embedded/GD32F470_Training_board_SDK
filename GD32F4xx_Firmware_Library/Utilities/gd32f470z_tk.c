@@ -35,7 +35,7 @@ OF SUCH DAMAGE.
 */
 
 #include <stdio.h>
-#include "gd32f470z_tk.h"
+#include <gd32f470z_tk.h>
 
 /* private variables */
 static uint32_t GPIO_PORT[LEDn] = {LED1_GPIO_PORT, LED2_GPIO_PORT};

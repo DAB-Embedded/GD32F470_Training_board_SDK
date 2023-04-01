@@ -40,6 +40,7 @@ OF SUCH DAMAGE.
 
 #include <stdint.h>
 
+/* function declarations */
 /* configure systick */
 void systick_config(void);
 /* delay a time in milliseconds */

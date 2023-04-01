@@ -34,10 +34,11 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWIS
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
 OF SUCH DAMAGE.
 */
-
+#include <stdio.h>
 #include "gd32f4xx_it.h"
 #include "main.h"
 #include "systick.h"
+#include "i2c.h"
 
 /*!
     \brief    this function handles NMI exception
@@ -57,6 +58,7 @@ void NMI_Handler(void)
 */
 void HardFault_Handler(void)
 {
+    printf("\r\nHardFault\r\n");
     /* if Hard Fault exception occurs, go to infinite loop */
     while(1) {
     }
@@ -70,6 +72,7 @@ void HardFault_Handler(void)
 */
 void MemManage_Handler(void)
 {
+    printf("\r\nMemManage\r\n");
     /* if Memory Manage exception occurs, go to infinite loop */
     while(1) {
     }
@@ -83,6 +86,7 @@ void MemManage_Handler(void)
 */
 void BusFault_Handler(void)
 {
+    printf("\r\nBusFault\r\n");
     /* if Bus Fault exception occurs, go to infinite loop */
     while(1) {
     }
@@ -96,6 +100,7 @@ void BusFault_Handler(void)
 */
 void UsageFault_Handler(void)
 {
+    printf("\r\nUsageFault\r\n");
     /* if Usage Fault exception occurs, go to infinite loop */
     while(1) {
     }
@@ -139,6 +144,27 @@ void PendSV_Handler(void)
 */
 void SysTick_Handler(void)
 {
-    led_spark();
     delay_decrement();
+}
+
+/*!
+    \brief      this function handles I2C0 event interrupt request exception
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void I2C0_EV_IRQHandler(void)
+{
+    i2cx_event_irq_handler();
+}
+
+/*!
+    \brief      this function handles I2C0 error interrupt request exception
+    \param[in]  none
+    \param[out] none
+    \retval     none
+*/
+void I2C0_ER_IRQHandler(void)
+{
+    i2cx_error_irq_handler();
 }

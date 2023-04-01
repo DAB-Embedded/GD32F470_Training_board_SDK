@@ -59,5 +59,9 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 /* this function handles SysTick exception */
 void SysTick_Handler(void);
+/* I2C0 event handle function */
+void I2C0_EV_IRQHandler(void);
+/* I2C0 error handle function */
+void I2C0_ER_IRQHandler(void);
 
 #endif /* GD32F4XX_IT_H */
